@@ -1,0 +1,293 @@
+box.innerHTML = html;
+		SDK.body().appendChild(box);
+		
+		var self = this;
+		document.getElementById(this.prefix + "chat").addEventListener("keypress", function(event) {
+			if (event.keyCode == 13) {
+				self.sendMessage();
+				return false;
+			}
+		});
+		document.getElementById(this.prefix + "boxclose").addEventListener("click", function() {
+			self.closeBox();
+			return false;
+		});
+		document.getElementById(this.prefix + "boxclose2").addEventListener("click", function() {
+			self.closeBox();
+			return false;
+		});
+		document.getElementById(this.prefix + "boxmin").addEventListener("click", function() {
+			self.minimizeBox();
+			return false;
+		});
+		if (this.promptContactInfo) {
+			document.getElementById(this.prefix + "contactboxmin").addEventListener("click", function() {
+				self.minimizeBox();
+				return false;
+			});
+			document.getElementById(this.prefix + "contactconnect").addEventListener("click", function() {
+				self.contactConnect();
+				return false;
+			});
+		}
+		if (document.getElementById(this.prefix + "boxmax") != null) {
+			document.getElementById(this.prefix + "boxmax").addEventListener("click", function() {
+				self.popup();
+				return false;
+			});
+		}
+		document.getElementById(this.prefix + "boxbarmax").addEventListener("click", function() {
+			self.maximizeBox();
+			return false;
+		});
+		
+		document.getElementById(this.prefix + "boxbarmax2").addEventListener("click", function() {
+			self.maximizeBox();
+			return false;
+		});
+		
+		var langOrig = null;
+		var nativeVoiceOrig = null;
+		var voiceOrig = null;
+		if (document.getElementById(this.prefix + "chooselanguage") != null) {
+			document.getElementById(this.prefix + "chooselanguage").addEventListener("change", function() {
+				if (nativeVoiceOrig == null && langOrig == null) {
+					langOrig = self.lang;
+					nativeVoiceOrig = self.nativeVoice;
+					voiceOrig = self.voice;
+				}
+				var element = document.getElementById(self.prefix + 'chooselanguage');
+				self.lang = element.value;
+				if (self.lang != "none") {
+					document.getElementById(self.prefix + 'yandex').style.display = "inline";
+					self.nativeVoice = true;
+					self.translate = true;
+					self.voice = null;
+				} else {
+					document.getElementById(self.prefix + 'yandex').style.display = "none";
+					self.translate = false;
+					self.lang = langOrig;
+					self.nativeVoice = nativeVoiceOrig;
+					self.voice = voiceOrig;
+				}
+			});
+		}
+		if (document.getElementById(this.prefix + "sendImage") != null) {
+			document.getElementById(this.prefix + "sendImage").addEventListener("click", function() {
+				self.sendImage();
+				return false;
+			});
+		}
+		if (document.getElementById(this.prefix + "sendAttachment") != null) {
+			document.getElementById(this.prefix + "sendAttachment").addEventListener("click", function() {
+				self.sendAttachment();
+				return false;
+			});
+		}
+		if (document.getElementById(this.prefix + "sendImageTool") != null) {
+			document.getElementById(this.prefix + "sendImageTool").addEventListener("click", function() {
+				self.sendImage();
+				return false;
+			});
+		}
+		if (document.getElementById(this.prefix + "sendAttachmentTool") != null) {
+			document.getElementById(this.prefix + "sendAttachmentTool").addEventListener("click", function() {
+				self.sendAttachment();
+				return false;
+			});
+		}
+
+		if (this.avatar && this.chatLog) {
+			document.getElementById(this.prefix + "online").style.display = "none";
+			document.getElementById(this.prefix + "scroller").style.display = "none";
+			if (this.version >= 6.0 && this.prefix == "botplatform") {
+				var chatLogDiv = document.getElementById(this.prefix + "showChatLog");
+				if (chatLogDiv != null) {
+					chatLogDiv.style.display = "block";
+				}
+				var chatLogButtonDiv = document.getElementById(this.prefix + "showChatLogButton");
+				if (chatLogButtonDiv != null) {
+					chatLogButtonDiv.style.display = "inline-block";
+				}
+			}
+		} else if (this.avatar && !this.chatLog) {
+			document.getElementById(this.prefix + "online").style.display = "none";
+			document.getElementById(this.prefix + "scroller").style.display = "none";
+			var chatLogDiv = document.getElementById(this.prefix + "showChatLog");
+			var chatLogButtonDiv = document.getElementById(this.prefix + "showChatLogButton");
+			if (chatLogDiv != null) {
+				chatLogDiv.style.display = "none";
+			}
+			if (chatLogButtonDiv != null) {
+				chatLogButtonDiv.style.display = "none";
+			}
+		} else if (!this.avatar && this.chatLog) {
+			document.getElementById(this.prefix + "online").style.display = "inline";
+			document.getElementById(this.prefix + "scroller").style.display = "inline-block";
+			document.getElementById(this.prefix + "avatar-div").style.display = "none";
+			var chatLogDiv = document.getElementById(this.prefix + "showChatLog");
+			var chatLogButtonDiv = document.getElementById(this.prefix + "showChatLogButton");
+			if (chatLogDiv != null) {
+				chatLogDiv.style.display = "none";
+			}
+			if (chatLogButtonDiv != null) {
+				chatLogButtonDiv.style.display = "none";
+			}
+			var bubbleDiv = document.getElementById(this.prefix + "bubble-div");
+			if (bubbleDiv != null) {
+				bubbleDiv.style.display = "none";	
+			}
+			var noBubblePlain = document.getElementsByClassName(this.prefix + "no-bubble-plain");
+			if (noBubblePlain != null && noBubblePlain.length != 0) {
+				noBubblePlain[0].style.display = "none";
+			}
+		} else {
+			document.getElementById(this.prefix + "online").style.display = "none";
+			document.getElementById(this.prefix + "scroller").style.display = "none";
+			document.getElementById(this.prefix + "avatar-div").style.display = "none";
+			var chatLogDiv = document.getElementById(this.prefix + "showChatLog");
+			var chatLogButtonDiv = document.getElementById(this.prefix + "showChatLogButton");
+			if (chatLogDiv != null) {
+				chatLogDiv.style.display = "none";
+			}
+			if (chatLogButtonDiv != null) {
+				chatLogButtonDiv.style.display = "none";
+			}
+		}
+		
+		if (document.getElementById(this.prefix + "showChatLog") != null) {
+			document.getElementById(this.prefix + "showChatLog").addEventListener("click", function() {
+				self.showChatLog();
+				return false;
+			});
+		}
+		if (document.getElementById(this.prefix + "showChatLogButton") != null) {
+			document.getElementById(this.prefix + "showChatLogButton").addEventListener("click", function() {
+				self.showChatLog();
+				return false;
+			});
+		}
+		if (document.getElementById(this.prefix + "showAvatarBot") != null) {
+			document.getElementById(this.prefix + "showAvatarBot").addEventListener("click", function() {
+				self.showAvatarBot();
+				return false;
+			});
+		}
+		if (document.getElementById(this.prefix + "showAvatarBotButton") != null) {
+			document.getElementById(this.prefix + "showAvatarBotButton").addEventListener("click", function() {
+				self.showAvatarBot();
+				return false;
+			});
+		}
+		
+		if (document.getElementById(this.prefix + "boxspeak") != null) {
+			document.getElementById(this.prefix + "boxspeak").addEventListener("click", function() {
+				self.speak = !self.speak;
+				var urlprefix = self.connection.credentials.url + "/";
+				if (self.speak) {
+					SDK.initAudio();
+					document.getElementById(self.prefix + "boxspeak").src = urlprefix + "images/sound.svg";
+					document.getElementById(self.prefix + "boxspeak2").src = urlprefix + "images/sound.svg";
+				} else {
+					document.getElementById(self.prefix + "boxspeak").src = urlprefix + "images/mute.svg";
+					document.getElementById(self.prefix + "boxspeak2").src = urlprefix + "images/mute.svg";
+				}
+				return false;
+			});
+			document.getElementById(this.prefix + "boxspeakmenu").addEventListener("click", function() {
+				self.speak = !self.speak;
+				var urlprefix = self.connection.credentials.url + "/";
+				if (self.speak) {
+					SDK.initAudio();
+					document.getElementById(self.prefix + "boxspeak").src = urlprefix + "images/sound.svg";
+					document.getElementById(self.prefix + "boxspeak2").src = urlprefix + "images/sound.svg";
+				} else {
+					document.getElementById(self.prefix + "boxspeak").src = urlprefix + "images/mute.svg";
+					document.getElementById(self.prefix + "boxspeak2").src = urlprefix + "images/mute.svg";
+				}
+				return false;
+			});
+		}
+		if (document.getElementById(this.prefix + "boxspeakrecognition") != null) {
+			SDK.registerSpeechRecognition(document.getElementById(self.prefix + 'chat'), function() {
+				self.sendMessage();
+			});
+			document.getElementById(this.prefix + "boxspeakrecognition").addEventListener("click", function() {
+				self.listen = !self.listen;
+				if (self.listen) {
+					SDK.startSpeechRecognition();
+					document.getElementById(self.prefix + 'boxspeakrecognition').src = urlprefix + "images/mic.svg";
+					document.getElementById(self.prefix + 'boxspeakrecognition2').src = urlprefix + "images/mic.svg";
+				} else {
+					SDK.stopSpeechRecognition();
+					document.getElementById(self.prefix + 'boxspeakrecognition').src = urlprefix + "images/micoff.svg";
+					document.getElementById(self.prefix + 'boxspeakrecognition2').src = urlprefix + "images/micoff.svg";
+				}
+			});
+			document.getElementById(this.prefix + "boxspeakrecognitionmenu").addEventListener("click", function() {
+				self.listen = !self.listen;
+				if (self.listen) {
+					SDK.startSpeechRecognition();
+					document.getElementById(self.prefix + 'boxspeakrecognition').src = urlprefix + "images/mic.svg";
+					document.getElementById(self.prefix + 'boxspeakrecognition2').src = urlprefix + "images/mic.svg";
+				} else {
+					SDK.stopSpeechRecognition();
+					document.getElementById(self.prefix + 'boxspeakrecognition').src = urlprefix + "images/micoff.svg";
+					document.getElementById(self.prefix + 'boxspeakrecognition2').src = urlprefix + "images/micoff.svg";
+				}
+			});
+		}
+	}
+	
+	this.showChatLog = function() {
+		document.getElementById(this.prefix + "avatar-div").style.display = "none";
+		document.getElementById(this.prefix + "online").style.display = "inline";
+		var bubbleDiv = document.getElementById(this.prefix + "bubble-div");
+		if (bubbleDiv != null) {
+			bubbleDiv.style.display = "none";
+		}
+		var noBubblePlain = document.getElementsByClassName(this.prefix + "no-bubble-plain");
+		if (noBubblePlain != null && noBubblePlain.length != 0) {
+			noBubblePlain[0].style.display = "none";
+		}
+		document.getElementById(this.prefix + "scroller").style.display = "inline-block";
+		if (this.version >= 6.0 && this.prefix == "botplatform") {
+			document.getElementById(this.prefix + "showChatLog").style.display = "none";
+			document.getElementById(this.prefix + "showChatLogButton").style.display = "none";
+			document.getElementById(this.prefix + "showAvatarBot").style.display = "block";
+			document.getElementById(this.prefix + "showAvatarBotButton").style.display = "inline-block";
+		}
+		if (this.background == null && this.backgroundIfNotChrome) {
+			var box = document.getElementById(this.prefix + "box");
+			if (box != null) {
+				box.style.backgroundColor = "#fff";
+			}
+		}
+	}
+	
+	this.showAvatarBot  = function() {
+		document.getElementById(this.prefix + "online").style.display = "none";
+		document.getElementById(this.prefix + "scroller").style.display = "none";
+		document.getElementById(this.prefix + "avatar-div").style.display = "inline-block";
+		var bubbleDiv = document.getElementById(this.prefix + "bubble-div");
+		if (bubbleDiv != null) {
+			bubbleDiv.style.display = "inherit";
+		}
+		var noBubblePlain = document.getElementsByClassName(this.prefix + "no-bubble-plain");
+		if (noBubblePlain != null && noBubblePlain.length != 0) {
+			noBubblePlain[0].style.display = "inherit";
+		}
+		if (this.version >= 6.0 && this.prefix == "botplatform") {
+			document.getElementById(this.prefix + "showChatLog").style.display = "block";
+			document.getElementById(this.prefix + "showChatLogButton").style.display = "inline-block";
+			document.getElementById(this.prefix + "showAvatarBot").style.display = "none";
+			document.getElementById(this.prefix + "showAvatarBotButton").style.display = "none";
+		}
+		if (this.background == null && this.backgroundIfNotChrome) {
+			var box = document.getElementById(this.prefix + "box");
+			if (box != null) {
+				box.style.backgroundColor = null;
+				box.style.border = null;
+			}
+		}
+	}
